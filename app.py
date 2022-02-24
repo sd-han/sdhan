@@ -59,10 +59,11 @@ def table_to_html():
     
     data2 = ('')
     
-    for i in range(len(result)):
+    for o in result:
         data2 += '<tr>'
-        for j in range(3):
-            data2 += '<th>' + result[i][j] + '</th>'
+        data2 += '<td>' + o[0] + '</td>'
+        data2 += '<td>' + o[1] + '</td>'
+        data2 += '<td>' + o[2] + '</td>'
         data2 += '</tr>'
     
     data3 = (
