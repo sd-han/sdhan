@@ -1,5 +1,5 @@
 from unittest import result
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 import pymysql
 import json
@@ -29,6 +29,11 @@ cursor = connection.cursor()
 #     result = cursor.fetchall()
     
 #     return { "result" : result }
+
+@app.route('/file/<filename>')
+def file(filename):
+    return send_from_directory('static', filename)
+
 
 @app.route('/table')
 def table_to_html():
