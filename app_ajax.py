@@ -20,7 +20,7 @@ connection = pymysql.connect(
 
 cursor = connection.cursor()
 
-def query_user(login_id, user_name, company_name):
+def select_user(login_id, user_name, company_name):
     cursor.execute((
         "select login_id, user_name, company_name "
         "from user_sdhan "
@@ -29,7 +29,7 @@ def query_user(login_id, user_name, company_name):
     result = cursor.fetchall()
     return { "result" : result }
 
-def query_login_id(login_id):
+def select_login_id(login_id):
     cursor.execute((
         "select login_id, user_name, company_name "
         "from user_sdhan "
@@ -67,35 +67,35 @@ def update_user(login_id, user_name, company_name):
     return "0"
 
 
-@app.route('/read', methods=['GET'])
-def sql_search_user():
+@app.route('/select', methods=['GET'])
+def select_user_api():
     login_id = request.args.get('login_id')
     user_name = request.args.get('user_name')
     company_name = request.args.get('company_name')
-    return query_user(login_id, user_name, company_name)
+    return select_user(login_id, user_name, company_name)
 
-@app.route('/read/login_id', methods=['GET'])
-def sql_search_login_id():
+@app.route('/select/login_id', methods=['GET'])
+def select_login_id_api():
     login_id = request.args.get('login_id')
-    return query_login_id(login_id)
+    return select_login_id(login_id)
 
-@app.route('/delete', methods=['GET'])
-def sql_delete_user():
-    login_id = request.args.get('login_id')
+@app.route('/delete', methods=['POST'])
+def delete_user_api():
+    login_id = request.form['login_id']
     return delete_user(login_id)
 
-@app.route('/insert', methods=['GET'])
-def sql_insert_user():
-    login_id = request.args.get('login_id')
-    user_name = request.args.get('user_name')
-    company_name = request.args.get('company_name')
+@app.route('/insert', methods=['POST'])
+def insert_user_api():
+    login_id = request.form['login_id']
+    user_name = request.form['user_name']
+    company_name = request.form['company_name']
     return insert_user(login_id, user_name, company_name)
 
-@app.route('/update', methods=['GET'])
-def sql_update_user():
-    login_id = request.args.get('login_id')
-    user_name = request.args.get('user_name')
-    company_name = request.args.get('company_name')
+@app.route('/update', methods=['POST'])
+def update_user_api():
+    login_id = request.form['login_id']
+    user_name = request.form['user_name']
+    company_name = request.form['company_name']
     return update_user(login_id, user_name, company_name)
 
 

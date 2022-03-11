@@ -28,16 +28,16 @@
         alert("데이터 전달 확인 : " + login_id);
         $.ajax({
             type:'GET',
-            url:'/read/login_id?login_id=' + login_id,
+            url:'/select/login_id?login_id=' + login_id,
             success:function(data){
                 alert("update_view 불러오기 성공");
                 const result = data.result;
                 const get_login_id = result[0][0];
                 const get_user_name = result[0][1];
                 const get_company_name = result[0][2];
-                document.getElementById("inputId").value = get_login_id;
-                document.getElementById("inputName").value = get_user_name;
-                document.getElementById("inputCompany").value = get_company_name;
+                $("#inputId").val(get_login_id);
+                $("#inputName").val(get_user_name);
+                $("#inputCompany").val(get_company_name);
             },
             error:function(){
                 alert("update_view 연결실패");
@@ -45,12 +45,17 @@
         });  
         
         $("button").click(function(){
-            const login_id = document.getElementById('inputId').value;
-            const user_name = document.getElementById('inputName').value;
-            const company_name = document.getElementById('inputCompany').value;
+            const login_id = $("#inputId").val();
+            const user_name = $("#inputName").val();
+            const company_name = $("#inputCompany").val();
             $.ajax({
-                type:'GET',
-                url:'/update?login_id=' + login_id + '&user_name=' + user_name + '&company_name=' + company_name,
+                type:'POST',
+                url:'/update',
+                data: {
+                    login_id : login_id,
+                    user_name : user_name,
+                    company_name : company_name
+                },
                 success:function(){
                     alert("update 성공");
                     window.location.href = '/user/detail_view/' + login_id

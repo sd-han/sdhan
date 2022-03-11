@@ -22,6 +22,7 @@
 <br>
 <button id="modify_user"> 사용자 수정 </button>
 <button id="delete_user" style="background-color:#f4cccc;"> 사용자 삭제 </button>
+<button id="show_user"> 사용자 목록보기 </button>
 
 <script>
     $(document).ready(function(){
@@ -29,16 +30,16 @@
         alert("데이터 전달 확인 : " + login_id);
         $.ajax({
             type:'GET',
-            url:'/read/login_id?login_id=' + login_id,
+            url:'/select/login_id?login_id=' + login_id,
             success:function(data){
                 alert("detail_view 접속성공");
                 const result = data.result;
                 const get_login_id = result[0][0];
                 const get_user_name = result[0][1];
                 const get_company_name = result[0][2];
-                document.getElementById("login_id").innerHTML = get_login_id;
-                document.getElementById("user_name").innerHTML = get_user_name;
-                document.getElementById("company_name").innerHTML = get_company_name;
+                $("#login_id").text(get_login_id);
+                $("#user_name").text(get_user_name);
+                $("#company_name").text(get_company_name);
             },
             error:function(){
                 alert("detail_view 연결실패");
@@ -54,21 +55,38 @@
                     window.location.href = '/user/update_view/' + login_id
                 },
                 error:function(){
-                    alert("insert_view 연결실패");
+                    alert("update_view 연결실패");
                 }
             });
         });
 
         $("#delete_user").on("click", function() {
             $.ajax({
-                type:'GET',
-                url:'/delete?login_id=' + login_id,
-                success:function(data){
+                type:'POST',
+                url:'/delete',
+                data: {
+                    login_id : login_id
+                },
+                success:function(){
                     alert("사용자" + login_id + " : 삭제 성공");
                     window.location.href = '/user/list_view'
                 },
                 error:function(){
                     alert("사용자 삭제 실패");
+                }
+            });
+        });
+
+        $("#show_user").on("click", function() {
+            $.ajax({
+                type:'GET',
+                url:'/user/list_view',
+                success:function(){
+                    alert("사용자 목록으로 돌아갑니다.");
+                    window.location.href = '/user/list_view'
+                },
+                error:function(){
+                    alert("사용자 불러오기 실패");
                 }
             });
         });

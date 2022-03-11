@@ -25,12 +25,17 @@
 <script>
     $(document).ready(function(){
         $("button").click(function(){
-            const login_id = document.getElementById('inputId').value;
-            const user_name = document.getElementById('inputName').value;
-            const company_name = document.getElementById('inputCompany').value;
+            const login_id = $("#inputId").val();
+            const user_name = $("#inputName").val();
+            const company_name = $("#inputCompany").val();
             $.ajax({
-                type:'GET',
-                url:'/insert?login_id=' + login_id + '&user_name=' + user_name + '&company_name=' + company_name,
+                type:'POST',
+                url:'/insert',
+                data: {
+                    login_id : login_id,
+                    user_name : user_name,
+                    company_name : company_name
+                },
                 success:function(){
                     alert("insert 성공");
                     window.location.href = '/user/list_view'

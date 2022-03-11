@@ -34,24 +34,24 @@
 <script>
     $(document).ready(function(){
         $.ajax({
-                type:'GET',
-                url:'/read?login_id=&user_name=&company_name=',
-                success:function(data){
-                    alert("기본 연결성공");
-                    $('#dataTable > tbody').empty();
-                    const result = data.result;
-                    for(var i = 0; i < result.length; i++){
-                        $("#dataTable").append("<tr> \
-                        <td align='center'> <a href='/user/detail_view/" + result[i][0]+ "'> " + result[i][0] + "</a></td> \
-                        <td align='center'>" + result[i][1] + "</td> \
-                        <td align='center'>" + result[i][2] + "</td> \
-                        </tr>");
-                    }
-                },
-                error:function(){
-                    alert("연결실패");
+            type:'GET',
+            url:'/select?login_id=&user_name=&company_name=',
+            success:function(data){
+                alert("기본 연결성공");
+                $('#dataTable > tbody').empty();
+                const result = data.result;
+                for(var i = 0; i < result.length; i++){
+                    $("#dataTable").append("<tr> \
+                    <td align='center'> <a href='/user/detail_view/" + result[i][0]+ "'> " + result[i][0] + "</a></td> \
+                    <td align='center'>" + result[i][1] + "</td> \
+                    <td align='center'>" + result[i][2] + "</td> \
+                    </tr>");
                 }
-            });
+            },
+            error:function(){
+                alert("기본 연결실패");
+            }
+        });
 
         $("button").click(function(){
             $.ajax({
