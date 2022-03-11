@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 외부스크립트는 헤드에 위치 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    table {
+        border: 1px solid #444444;
+        border-collapse: collapse;
+      }
+      th, td {
+      border: 1px solid #444444;
+    }
+  </style>
+</head>
+
+<body>
+<h1> {{login_id}}의 정보 </h1>
+<p>서버 접속시간 : {{y}}년 {{m}}월 {{d}}일 {{hour_result}}시 {{min}}분 {{sec}}초</p>
+<p>아이디 = <a id="login_id"> </a></p>
+<p></p>이름 = <a id="user_name"> </a></p>
+<p></p>회사명 = <a id="company_name"> </a></p>
+
+<br>
+<button id="modify_user"> 사용자 수정 </button>
+<button id="delete_user" style="background-color:#f4cccc;"> 사용자 삭제 </button>
+
+<script>
+    // var get_login_id;
+    // var get_user_name;
+    // var get_company_name;
+
+    $(document).ready(function(){
+        const login_id = "{{login_id}}"
+        alert("데이터 전달 확인 : " + login_id);
+
+        $.ajax({
+            type:'GET',
+            url:'/read/login_id?login_id=' + login_id,
+
+            success:function(data){
+                alert("detail_view 접속성공");
+                const result = data.result;
+                const get_login_id = result[0][0];
+                const get_user_name = result[0][1];
+                const get_company_name = result[0][2];
+                document.getElementById("login_id").innerHTML = get_login_id;
+                document.getElementById("user_name").innerHTML = get_user_name;
+                document.getElementById("company_name").innerHTML = get_company_name;
+            },
+
+            error:function(){
+                alert("detail_view 연결실패");
+            }
+        });  
+
+        $("#modify_user").on("click", function() {
+            $.ajax({
+                type:'GET',
+                url:'/user/list_view',
+
+                success:function(data){
+                    alert("update_view 연결성공");
+                    window.location.href = '/user/update_view/' + login_id
+                },
+
+                error:function(){
+                    alert("insert_view 연결실패");
+                }
+            });
+        });
+
+        $("#delete_user").on("click", function() {
+            $.ajax({
+                type:'GET',
+                url:'/delete?login_id=' + login_id,
+
+                success:function(data){
+                    alert("사용자" + login_id + " : 삭제 성공");
+                    // location.replace('/user/insert_view');
+                    window.location.href = '/user/list_view'
+                },
+
+                error:function(){
+                    alert("사용자 삭제 실패");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

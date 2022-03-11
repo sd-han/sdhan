@@ -1,0 +1,35 @@
+<!--db_table.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>query_user</title>
+    <H1>DB</H1> 
+</head>
+<body>
+
+<br>
+<br>
+	<table class="table table-hover table-striped text-center" style=" width: 50%; border: 1px  solid #111114;">
+		<thead>
+			<tr>
+				<center>
+				<th>login_id</th>
+				<th>user_name</th>
+				<th>company_name</th>
+				</center>
+			</tr>
+		</thead>
+	    
+	    <tbody>
+			{% for i in data_list %}
+			<tr>
+				<td><center>{{ i[0] }}</center></td>
+				<td><center>{{ i[1] }}</center></td>
+				<td><center>{{ i[2] }}</center></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>

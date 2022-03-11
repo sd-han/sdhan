@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 외부스크립트는 헤드에 위치 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+<h1 id="key"> </h1>
+
+<!-- <input type="text" id="inputText1">
+<input type="text" id="inputText2">
+<input type="text" id="inputText3"> -->
+
+<p>첫번째 검색어 = <input type="text" id="inputText1"></p>
+<p>두번째 검색어 = <input type="text" id="inputText2"></p>
+<p>세번째 검색어 = <input type="text" id="inputText3"></p>
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>login_id</th>
+            <th>user_name</th>
+            <th>company_name</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<br>
+<button> ajax button </button>
+
+<script>
+    var key = "ajax_test";
+    document.getElementById("key").innerHTML = key;
+
+    // ### 여기 있을때와의 차이? (동작 안함)
+    // const input1 = document.getElementById('inputText1').value;
+    // const input2 = document.getElementById('inputText2').value;
+    // const input3 = document.getElementById('inputText3').value;
+
+    $(document).ready(function(){
+        $("button").click(function(){
+            const input1 = document.getElementById('inputText1').value;
+            const input2 = document.getElementById('inputText2').value;
+            const input3 = document.getElementById('inputText3').value;
+
+            $.ajax({
+                type:'GET',
+                url:'/api/v0/user/search?login_id=' + input1 + '&user_name=' + input2 + '&company_name=' + input3,
+
+                success:function(data){
+                    alert("연결성공");
+                    $('#dataTable > tbody').empty();
+                    const result = data.result;
+
+                    for(var i = 0; i < result.length; i++){
+                        $("#dataTable").append("<tr>\
+                        <td align='center'> " + result[i][0] + "</td> \
+                        <td align='center'> " + result[i][1] + "</td> \
+                        <td align='center'> " + result[i][2] + "</td> \
+                        </tr>");
+                    }
+                },
+
+                error:function(){
+                    alert("연결실패");
+                }
+            });        
+        });
+    });
+</script>
+</body>
+</html>
