@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    table {
+        border: 1px solid #444444;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #444444;
+    }
+</style>
+</head>
+
+<body>
+<h1> 회사 리스트 </h1>
+<p> 서버 접속시간 : {{now.year}}년 {{now.month}}월 {{now.day}}일 {{now.hour}}시 {{now.minute}}분 {{now.second}}초 </p>
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>아이디</th>
+            <th>회사명</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<br>
+<button> 회사 추가 </button>
+
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            type:'GET',
+            url:'/company/select?company_id=&company_name=',
+            success:function(data){
+                alert("기본 연결성공");
+                $('#dataTable > tbody').empty();
+                const result = data.result;
+                for(var i = 0; i < result.length; i++){
+                    $("#dataTable").append("<tr> \
+                    <td align='center'> <a href='/company/detail_view/" + result[i][0]+ "'> " + result[i][0] + "</a></td> \
+                    <td align='center'>" + result[i][1] + "</td> \
+                    </tr>");
+                }
+            },
+            error:function(){
+                alert("기본 연결실패");
+            }
+        });
+
+        $("button").click(function(){
+            $.ajax({
+                type:'GET',
+                url:'/company/insert_view',
+                success:function(data){
+                    alert("company_insert_view 연결성공");
+                    window.location.href = '/company/insert_view'
+                },
+                error:function(){
+                    alert("company_insert_view 연결실패");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

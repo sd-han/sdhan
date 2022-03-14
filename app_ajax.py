@@ -33,7 +33,7 @@ def select_login_id(login_id):
     cursor.execute((
         "select login_id, user_name, company_name "
         "from user_sdhan "
-        "where login_id like '" + login_id + "'"
+        "where login_id like '" + login_id + "' "
         "limit 1;"
     ))
     result = cursor.fetchall()
@@ -42,7 +42,7 @@ def select_login_id(login_id):
 def delete_user(login_id):
     cursor.execute((
         "delete from user_sdhan "
-        "where login_id like '" + login_id + "'"
+        "where login_id like '" + login_id + "' "
         "limit 1;"
     ))
     connection.commit()
@@ -60,7 +60,7 @@ def update_user(login_id, user_name, company_name):
     cursor.execute((
         "update user_sdhan "
         "set user_name='" + user_name + "', company_name='" + company_name + "' "
-        " where login_id like '" + login_id + "'"
+        "where login_id like '" + login_id + "' "
         "limit 1;"
     ))
     connection.commit()
@@ -118,6 +118,104 @@ def insert_view():
 def update_view(login_id):
     now = datetime.now()
     return render_template('update_view.html', login_id=login_id, now=now)
+
+
+# company_sdhan
+def select_company(company_id, company_name):
+    cursor.execute((
+        "select company_id, company_name "
+        "from company_sdhan "
+        "order by company_id ASC"
+    ))
+    result = cursor.fetchall()
+    return { "result" : result }
+
+def select_company_id(company_id):
+    cursor.execute((
+        "select company_id, company_name "
+        "from company_sdhan "
+        "where company_id like '" + company_id + "' "
+        "limit 1;"
+    ))
+    result = cursor.fetchall()
+    return { "result" : result }
+
+def delete_company(company_id):
+    cursor.execute((
+        "delete from company_sdhan "
+        "where company_id like '" + company_id + "' "
+        "limit 1;"
+    ))
+    connection.commit()
+    return "0"
+
+def insert_company(company_id, company_name):
+    cursor.execute((
+        "insert into company_sdhan(company_id, company_name) "
+        "values ('" + company_id + "','" + company_name + "');"
+    ))
+    connection.commit()
+    return "0"
+
+def update_company(company_id, company_name):                                
+    cursor.execute((
+        "update company_sdhan "
+        "set company_name='" + company_name + "' "
+        "where company_id like '" + company_id + "' "
+        "limit 1;"
+    ))
+    connection.commit()
+    return "0"
+
+
+@app.route('/company/select', methods=['GET'])
+def select_company_api():
+    company_id = request.args.get('company_id')
+    company_name = request.args.get('company_name')
+    return select_company(company_id, company_name)
+
+@app.route('/company/select/company_id', methods=['GET'])
+def select_company_id_api():
+    company_id = request.args.get('company_id')
+    return select_company_id(company_id)
+
+@app.route('/company/delete', methods=['POST'])
+def delete_company_api():
+    company_id = request.form['company_id']
+    return delete_company(company_id)
+
+@app.route('/company/insert', methods=['POST'])
+def insert_company_api():
+    company_id = request.form['company_id']
+    company_name = request.form['company_name']
+    return insert_company(company_id, company_name)
+
+@app.route('/company/update', methods=['POST'])
+def update_company_api():
+    company_id = request.form['company_id']
+    company_name = request.form['company_name']
+    return update_company(company_id, company_name)
+
+
+@app.route('/company/list_view', methods=['GET', 'POST'])
+def company_list_view():
+    now = datetime.now()
+    return render_template('company_list_view.html', now=now)
+
+@app.route('/company/detail_view/<company_id>', methods=['GET', 'POST'])
+def company_detail_view(company_id):
+    now = datetime.now()
+    return render_template('company_detail_view.html', company_id=company_id, now=now)
+
+@app.route('/company/insert_view', methods=['GET', 'POST'])
+def company_insert_view():
+    now = datetime.now()
+    return render_template('company_insert_view.html', now=now)        
+
+@app.route('/company/update_view/<company_id>', methods=['GET', 'POST'])
+def company_update_view(company_id):
+    now = datetime.now()
+    return render_template('company_update_view.html', company_id=company_id, now=now)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='3001', debug=True)

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    table {
+        border: 1px solid #444444;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #444444;
+    }
+</style>
+</head>
+
+<body>
+<h1> {{company_id}}의 정보 업데이트 </h1>
+<p>서버 접속시간 : {{now.year}}년 {{now.month}}월 {{now.day}}일 {{now.hour}}시 {{now.minute}}분 {{now.second}}초</p>
+<p>아이디 : <input type="text" id="inputId" value=""></p>
+<p>회사명 : <input type="text" id="inputCompany" value=""></p>
+<br>
+<button> 회사 저장 </button>
+
+<script>
+    $(document).ready(function(){
+        const company_id = "{{company_id}}"
+        alert("데이터 전달 확인 : " + company_id);
+        $.ajax({
+            type:'GET',
+            url:'/company/select/company_id?company_id=' + company_id,
+            success:function(data){
+                alert("company_id_update_view 불러오기 성공");
+                const result = data.result;
+                const get_company_id = result[0][0];
+                const get_company_name = result[0][1];
+                $("#inputId").val(get_company_id);
+                $("#inputCompany").val(get_company_name);
+            },
+            error:function(){
+                alert("update_view 연결실패");
+            }
+        });  
+        
+        $("button").click(function(){
+            const company_id = $("#inputId").val();
+            const company_name = $("#inputCompany").val();
+            $.ajax({
+                type:'POST',
+                url:'/company/update',
+                data: {
+                    company_id : company_id,
+                    company_name : company_name
+                },
+                success:function(){
+                    alert("company_update 성공");
+                    window.location.href = '/company/detail_view/' + company_id
+                },
+                error:function(){
+                    alert("company_update 실패");
+                }
+            });        
+        });
+    });
+</script>
+</body>
+</html>
