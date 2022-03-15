@@ -29,7 +29,7 @@
         alert("데이터 전달 확인 : " + company_id);
         $.ajax({
             type:'GET',
-            url:'/company/select/company_id?company_id=' + company_id,
+            url:'/company/api/get?company_id=' + company_id,
             success:function(data){
                 alert("company_detail_view 접속성공");
                 const result = data.result;
@@ -46,8 +46,8 @@
         $("#modify_company").on("click", function() {
             $.ajax({
                 type:'GET',
-                url:'/company/list_view',
-                success:function(data){
+                url:'/company/api/list',
+                success:function(){
                     alert("company_update_view 연결성공");
                     window.location.href = '/company/update_view/' + company_id
                 },
@@ -60,7 +60,7 @@
         $("#delete_company").on("click", function() {
             $.ajax({
                 type:'POST',
-                url:'/company/delete',
+                url:'/company/api/delete',
                 data: {
                     company_id : company_id
                 },

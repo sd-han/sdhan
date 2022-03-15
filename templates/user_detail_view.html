@@ -30,7 +30,7 @@
         alert("데이터 전달 확인 : " + login_id);
         $.ajax({
             type:'GET',
-            url:'/select/login_id?login_id=' + login_id,
+            url:'/user/api/get?login_id=' + login_id,
             success:function(data){
                 alert("detail_view 접속성공");
                 const result = data.result;
@@ -50,7 +50,7 @@
             $.ajax({
                 type:'GET',
                 url:'/user/list_view',
-                success:function(data){
+                success:function(){
                     alert("update_view 연결성공");
                     window.location.href = '/user/update_view/' + login_id
                 },
@@ -63,7 +63,7 @@
         $("#delete_user").on("click", function() {
             $.ajax({
                 type:'POST',
-                url:'/delete',
+                url:'/user/api/delete',
                 data: {
                     login_id : login_id
                 },

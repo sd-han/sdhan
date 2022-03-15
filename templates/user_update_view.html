@@ -34,7 +34,7 @@
         alert("데이터 전달 확인 : " + login_id);
         $.ajax({
             type:'GET',
-            url:'/select/login_id?login_id=' + login_id,
+            url:'/user/api/get?login_id=' + login_id,
             success:function(data){
                 alert("update_view 불러오기 성공");
                 const result = data.result;
@@ -45,7 +45,7 @@
                 $("#inputName").val(get_user_name);
                 $.ajax({
                     type:'GET',
-                    url:'/insert/company_name',
+                    url:'/company/api/list',
                     success:function(data){
                         alert("insert_view 연결성공");
                         const result = data.result;
@@ -77,7 +77,7 @@
             const company_name = $("#select_box").val();
             $.ajax({
                 type:'POST',
-                url:'/update',
+                url:'/user/api/update',
                 data: {
                     login_id : login_id,
                     user_name : user_name,

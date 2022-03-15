@@ -34,7 +34,7 @@
     $(document).ready(function(){
         $.ajax({
             type:'GET',
-            url:'/company/select',
+            url:'/company/api/list',
             success:function(data){
                 alert("기본 연결성공");
                 $('#dataTable > tbody').empty();
@@ -57,7 +57,7 @@
             $.ajax({
                 type:'GET',
                 url:'/company/insert_view',
-                success:function(data){
+                success:function(){
                     alert("company_insert_view 연결성공");
                     window.location.href = '/company/insert_view'
                 },

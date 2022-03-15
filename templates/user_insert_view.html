@@ -33,7 +33,7 @@
     $(document).ready(function(){
         $.ajax({
             type:'GET',
-            url:'/insert/company_name',
+            url:'/company/api/list',
             success:function(data){
                 alert("insert_view 연결성공");
                 const result = data.result;
@@ -57,7 +57,7 @@
             } else {
                 $.ajax({
                     type:'POST',
-                    url:'/insert',
+                    url:'/user/api/add',
                     data: {
                         login_id : login_id,
                         user_name : user_name,

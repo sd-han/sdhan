@@ -27,7 +27,7 @@
         alert("데이터 전달 확인 : " + company_id);
         $.ajax({
             type:'GET',
-            url:'/company/select/company_id?company_id=' + company_id,
+            url:'/company/api/get?company_id=' + company_id,
             success:function(data){
                 alert("company_id_update_view 불러오기 성공");
                 const result = data.result;
@@ -46,7 +46,7 @@
             const company_name = $("#inputCompany").val();
             $.ajax({
                 type:'POST',
-                url:'/company/update',
+                url:'/company/api/update',
                 data: {
                     company_id : company_id,
                     company_name : company_name
