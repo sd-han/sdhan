@@ -34,16 +34,18 @@
     $(document).ready(function(){
         $.ajax({
             type:'GET',
-            url:'/company/select?company_id=&company_name=',
+            url:'/company/select',
             success:function(data){
                 alert("기본 연결성공");
                 $('#dataTable > tbody').empty();
                 const result = data.result;
                 for(var i = 0; i < result.length; i++){
-                    $("#dataTable").append("<tr> \
-                    <td align='center'> <a href='/company/detail_view/" + result[i][0]+ "'> " + result[i][0] + "</a></td> \
-                    <td align='center'>" + result[i][1] + "</td> \
-                    </tr>");
+                    $("#dataTable").append(
+                        "<tr> \
+                        <td align='center'> <a href='/company/detail_view/" + result[i][0]+ "'> " + result[i][0] + "</a></td> \
+                        <td align='center'>" + result[i][1] + "</td> \
+                        </tr>"
+                    );
                 }
             },
             error:function(){

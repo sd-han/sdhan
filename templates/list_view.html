@@ -22,7 +22,7 @@
         <tr>
             <th>아이디</th>
             <th>이름</th>
-            <th>회사명</th>
+            <th>회사id</th>
         </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
     $(document).ready(function(){
         $.ajax({
             type:'GET',
-            url:'/select?login_id=&user_name=&company_name=',
+            url:'/select',
             success:function(data){
                 alert("기본 연결성공");
                 $('#dataTable > tbody').empty();

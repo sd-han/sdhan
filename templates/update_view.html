@@ -18,7 +18,13 @@
 <p>서버 접속시간 : {{now.year}}년 {{now.month}}월 {{now.day}}일 {{now.hour}}시 {{now.minute}}분 {{now.second}}초</p>
 <p>아이디 : <input type="text" id="inputId" value=""></p>
 <p>이름 : <input type="text" id="inputName" value=""></p>
-<p>회사명 : <input type="text" id="inputCompany" value=""></p>
+<label for="Label"> 회사명 :
+    <form>
+        <select name="select_name" id="select_box">
+            <option value = "default" selected>회사명</option>
+        </select>
+    </form>
+</label>
 <br>
 <button> 사용자 저장 </button>
 
@@ -34,10 +40,31 @@
                 const result = data.result;
                 const get_login_id = result[0][0];
                 const get_user_name = result[0][1];
-                const get_company_name = result[0][2];
+                const get_company_id = result[0][2];
                 $("#inputId").val(get_login_id);
                 $("#inputName").val(get_user_name);
-                $("#inputCompany").val(get_company_name);
+                $.ajax({
+                    type:'GET',
+                    url:'/insert/company_name',
+                    success:function(data){
+                        alert("insert_view 연결성공");
+                        const result = data.result;
+                        for(var i = 0; i < result.length; i++){
+                            if(get_company_id == result[i][0]){
+                                $("#select_box").append(
+                                    "<option value = '" + result[i][0] + "' selected>" + result[i][1] +"</option>"
+                                );
+                            } else {
+                                $("#select_box").append(
+                                    "<option value = '" + result[i][0] + "'>" + result[i][1] +"</option>"
+                                );
+                            }
+                        }
+                    },
+                    error:function(){
+                        alert("insert_view 연결실패");
+                    }
+                });
             },
             error:function(){
                 alert("update_view 연결실패");
@@ -47,14 +74,14 @@
         $("button").click(function(){
             const login_id = $("#inputId").val();
             const user_name = $("#inputName").val();
-            const company_name = $("#inputCompany").val();
+            const company_id = $("#select_box").val();
             $.ajax({
                 type:'POST',
                 url:'/update',
                 data: {
                     login_id : login_id,
                     user_name : user_name,
-                    company_name : company_name
+                    company_id : company_id
                 },
                 success:function(){
                     alert("update 성공");

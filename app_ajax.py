@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
 import pymysql
-import json
 
 app = Flask(__name__)
 CORS(app)
@@ -20,9 +19,9 @@ connection = pymysql.connect(
 
 cursor = connection.cursor()
 
-def select_user(login_id, user_name, company_name):
+def select_user():
     cursor.execute((
-        "select login_id, user_name, company_name "
+        "select login_id, user_name, company_id "
         "from user_sdhan "
         "order by login_id ASC"
     ))
@@ -31,10 +30,18 @@ def select_user(login_id, user_name, company_name):
 
 def select_login_id(login_id):
     cursor.execute((
-        "select login_id, user_name, company_name "
+        "select login_id, user_name, company_id "
         "from user_sdhan "
         "where login_id like '" + login_id + "' "
         "limit 1;"
+    ))
+    result = cursor.fetchall()
+    return { "result" : result }
+
+def select_company_name():
+    cursor.execute((
+        "select distinct company_id, company_name "
+        "from company_sdhan "
     ))
     result = cursor.fetchall()
     return { "result" : result }
@@ -48,31 +55,27 @@ def delete_user(login_id):
     connection.commit()
     return "0"
 
-def insert_user(login_id, user_name, company_name):
+def insert_user(login_id, user_name, company_id):
     cursor.execute((
-        "insert into user_sdhan(login_id, user_name, company_name) "
-        "values ('" + login_id + "','" + user_name + "','" + company_name + "');"
+        "insert into user_sdhan(login_id, user_name, company_id) "
+        "values ('" + login_id + "','" + user_name + "','" + company_id + "');"
     ))
     connection.commit()
     return "0"
 
-def update_user(login_id, user_name, company_name):                                
+def update_user(login_id, user_name, company_id):                                
     cursor.execute((
         "update user_sdhan "
-        "set user_name='" + user_name + "', company_name='" + company_name + "' "
+        "set user_name='" + user_name + "', company_id='" + company_id + "' "
         "where login_id like '" + login_id + "' "
         "limit 1;"
     ))
     connection.commit()
     return "0"
 
-
 @app.route('/select', methods=['GET'])
 def select_user_api():
-    login_id = request.args.get('login_id')
-    user_name = request.args.get('user_name')
-    company_name = request.args.get('company_name')
-    return select_user(login_id, user_name, company_name)
+    return select_user()
 
 @app.route('/select/login_id', methods=['GET'])
 def select_login_id_api():
@@ -88,15 +91,19 @@ def delete_user_api():
 def insert_user_api():
     login_id = request.form['login_id']
     user_name = request.form['user_name']
-    company_name = request.form['company_name']
-    return insert_user(login_id, user_name, company_name)
+    company_id = request.form['company_id']
+    return insert_user(login_id, user_name, company_id)
+
+@app.route('/insert/company_name', methods=['GET'])
+def insert_company_name_api():
+    return select_company_name()
 
 @app.route('/update', methods=['POST'])
 def update_user_api():
     login_id = request.form['login_id']
     user_name = request.form['user_name']
-    company_name = request.form['company_name']
-    return update_user(login_id, user_name, company_name)
+    company_id = request.form['company_id']
+    return update_user(login_id, user_name, company_id)
 
 
 @app.route('/user/list_view', methods=['GET', 'POST'])
@@ -121,7 +128,7 @@ def update_view(login_id):
 
 
 # company_sdhan
-def select_company(company_id, company_name):
+def select_company():
     cursor.execute((
         "select company_id, company_name "
         "from company_sdhan "
@@ -170,9 +177,7 @@ def update_company(company_id, company_name):
 
 @app.route('/company/select', methods=['GET'])
 def select_company_api():
-    company_id = request.args.get('company_id')
-    company_name = request.args.get('company_name')
-    return select_company(company_id, company_name)
+    return select_company()
 
 @app.route('/company/select/company_id', methods=['GET'])
 def select_company_id_api():
