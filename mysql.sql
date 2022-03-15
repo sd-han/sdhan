@@ -47,6 +47,8 @@ desc user_sdhan
 
 select * from user_sdhan
 
+select count(login_id) from user_sdhan
+
 select * from company
 
 desc company_sdhan

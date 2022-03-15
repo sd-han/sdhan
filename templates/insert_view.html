@@ -51,9 +51,9 @@
         $("button").click(function(){
             const login_id = $("#inputId").val();
             const user_name = $("#inputName").val();
-            const company_id = $("#select_box").val();
+            const company_name = $("#select_box").val();
             if ($("#select_box").val() == "default"){
-                alert("company_id를 선택하세요.");
+                alert("company_name를 선택하세요.");
             } else {
                 $.ajax({
                     type:'POST',
@@ -61,7 +61,7 @@
                     data: {
                         login_id : login_id,
                         user_name : user_name,
-                        company_id : company_id
+                        company_name : company_name
                     },
                     success:function(){
                         alert("insert 성공");

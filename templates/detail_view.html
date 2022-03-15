@@ -18,7 +18,7 @@
 <p>서버 접속시간 : {{now.year}}년 {{now.month}}월 {{now.day}}일 {{now.hour}}시 {{now.minute}}분 {{now.second}}초</p>
 <p>아이디 = <a id="login_id"> </a></p>
 <p>이름 = <a id="user_name"> </a></p>
-<p>회사id = <a id="company_id"> </a></p>
+<p>회사명 = <a id="company_name"> </a></p>
 <br>
 <button id="modify_user"> 사용자 수정 </button>
 <button id="delete_user" style="background-color:#f4cccc;"> 사용자 삭제 </button>
@@ -36,10 +36,10 @@
                 const result = data.result;
                 const get_login_id = result[0][0];
                 const get_user_name = result[0][1];
-                const get_company_id = result[0][2];
+                const get_company_name = result[0][2];
                 $("#login_id").text(get_login_id);
                 $("#user_name").text(get_user_name);
-                $("#company_id").text(get_company_id);
+                $("#company_name").text(get_company_name);
             },
             error:function(){
                 alert("detail_view 연결실패");
